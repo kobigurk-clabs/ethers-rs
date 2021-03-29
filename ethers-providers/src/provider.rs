@@ -198,6 +198,18 @@ impl<P: JsonRpcClient> Middleware for Provider<P> {
         self.request("eth_getTransactionByHash", [hash]).await
     }
 
+    /// Gets the validators BLS public keys on Celo
+    async fn get_validators_bls_public_keys(
+        &self,
+        block_number: String,
+    ) -> Result<Vec<String>, ProviderError> {
+        Ok(self
+            .0
+            .request("istanbul_getValidatorsBLSPublicKeys", [block_number])
+            .await
+            .map_err(Into::into)?)
+    }
+
     /// Gets the transaction receipt with `transaction_hash`
     async fn get_transaction_receipt<T: Send + Sync + Into<TxHash>>(
         &self,

@@ -268,6 +268,16 @@ pub trait Middleware: Sync + Send + Debug {
             .map_err(FromErr::from)
     }
 
+    async fn get_validators_bls_public_keys(
+        &self,
+        block_number: String,
+    ) -> Result<Vec<String>, Self::Error> {
+        self.inner()
+            .get_validators_bls_public_keys(block_number)
+            .await
+            .map_err(FromErr::from)
+    }
+
     async fn get_transaction<T: Send + Sync + Into<TxHash>>(
         &self,
         transaction_hash: T,
